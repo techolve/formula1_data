@@ -1,0 +1,3 @@
+class FastestLap {
+  const FastestLap();
+}

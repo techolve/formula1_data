@@ -1,0 +1,3 @@
+class Time {
+  const Time();
+}
