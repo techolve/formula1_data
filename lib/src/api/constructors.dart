@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:formula1_data/src/converters/constructor.dart';
+import 'package:formula1_data/src/converters/constructors/constructor.dart';
 
 Future<List<Constructor>> getConstructors({int? year}) async {
   year = year ?? DateTime.now().year;
