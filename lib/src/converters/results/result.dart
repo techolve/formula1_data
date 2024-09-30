@@ -1,4 +1,4 @@
-import 'package:formula1_data/src/results/result_table.dart';
+import 'package:formula1_data/src/converters/results/result_table.dart';
 
 class Result {
   final int season;
