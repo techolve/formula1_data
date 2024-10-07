@@ -13,7 +13,7 @@ class Constructor {
 
   factory Constructor.fromMap(dynamic map) {
     return Constructor(
-      constructorsId: map["constructorsId"],
+      constructorsId: map["constructorId"],
       url: map["url"],
       name: map["name"],
       nationality: map["nationality"],

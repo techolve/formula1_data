@@ -22,12 +22,12 @@ class Driver {
   factory Driver.fromMap(dynamic map) {
     return Driver(
       driverId: map["driverId"],
-      permanentNumber: map["permanentNumber"],
+      permanentNumber: int.parse(map["permanentNumber"]),
       code: map["code"],
       url: map["url"],
       givenName: map["givenName"],
       familyName: map["familyName"],
-      dateOfBirth: map["dateOfBirth"],
+      dateOfBirth: DateTime.parse(map["dateOfBirth"]),
       nationality: map["nationality"],
     );
   }
