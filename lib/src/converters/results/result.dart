@@ -1,13 +1,13 @@
 import 'package:formula1_data/src/converters/results/result_table.dart';
 
-class Result {
+class Race {
   final int season;
   final int round;
   final String url;
   final String raceName;
-  final ResultTable resultTable;
+  final List<Result> resultTable;
 
-  Result({
+  Race({
     required this.season,
     required this.round,
     required this.url,
