@@ -12,7 +12,6 @@ Future<List<Driver>> getDrivers({int? year}) async {
     final dynamic data = response.data;
     final List<dynamic> driversData = data["MRData"]["DriverTable"]["Drivers"];
     for (var data in driversData) {
-      debugPrint(data.toString());
       final Driver driver = Driver(
         driverId: data["driverId"],
         permanentNumber: int.parse(data["permanentNumber"]),

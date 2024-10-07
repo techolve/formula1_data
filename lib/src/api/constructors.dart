@@ -15,7 +15,6 @@ Future<List<Constructor>> getConstructors({int? year}) async {
         data["MRData"]["ConstructorTable"]["Constructors"];
 
     for (var data in constructorsData) {
-      debugPrint(data.toString());
       final Constructor constructor = Constructor(
         constructorsId: data["constructorId"],
         url: data["url"],
