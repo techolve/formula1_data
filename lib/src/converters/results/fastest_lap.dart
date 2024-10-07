@@ -1,5 +1,4 @@
 import 'package:formula1_data/formula1_data.dart';
-import 'package:formula1_data/src/converters/results/average_speed.dart';
 
 class FastestLap {
   final int rank;

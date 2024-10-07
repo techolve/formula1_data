@@ -4,4 +4,4 @@ library formula1_data;
 export './src/api/constructors.dart';
 
 // Converter
-export './src/converters/export.dart';
+export 'src/converters/converter.dart';
