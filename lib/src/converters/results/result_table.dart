@@ -3,7 +3,7 @@ import 'package:formula1_data/src/converters/drivers/driver.dart';
 import 'package:formula1_data/src/converters/results/fastest_lap.dart';
 import 'package:formula1_data/src/converters/results/time.dart';
 
-class ResultTable {
+class Result {
   final int number;
   final int position;
   final String positionText;
@@ -13,10 +13,10 @@ class ResultTable {
   final int grid;
   final int laps;
   final String status;
-  final Time time;
-  final FastestLap fastestLap;
+  final Time? time;
+  final FastestLap? fastestLap;
 
-  const ResultTable({
+  const Result({
     required this.number,
     required this.position,
     required this.positionText,
@@ -26,12 +26,12 @@ class ResultTable {
     required this.grid,
     required this.laps,
     required this.status,
-    required this.time,
-    required this.fastestLap,
+    this.time,
+    this.fastestLap,
   });
 
-  factory ResultTable.fromMap(dynamic map) {
-    return ResultTable(
+  factory Result.fromMap(dynamic map) {
+    return Result(
       number: map["number"],
       position: map["position"],
       positionText: map["positionText"],
