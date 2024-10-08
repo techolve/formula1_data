@@ -1,5 +1,6 @@
 import 'package:formula1_data/formula1_data.dart';
 
+/// Fastest lap data
 class FastestLap {
   final int rank;
   final int lap;

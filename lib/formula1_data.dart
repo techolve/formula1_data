@@ -1,3 +1,4 @@
+/// A Formula1 data package.
 library formula1_data;
 
 // API

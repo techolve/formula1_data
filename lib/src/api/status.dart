@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formula1_data/src/converters/status/status.dart';
 
+/// Get constructors data.
 Future<List<Status>> getStatus() async {
   List<Status> status = [];
   try {

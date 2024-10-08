@@ -1,3 +1,4 @@
+/// Time data
 class Time {
   final int? millis;
   final String time;

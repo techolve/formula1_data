@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formula1_data/formula1_data.dart';
 
+/// Get results data.
+/// If you want information for a specific year or round, consider using [year] or [round].
 Future<List<Race>> getResults({int? year, int? round}) async {
   year = year ?? DateTime.now().year;
   List<Race> results = [];

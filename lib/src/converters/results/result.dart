@@ -1,5 +1,6 @@
 import 'package:formula1_data/src/converters/results/result_table.dart';
 
+/// Race data
 class Race {
   final int season;
   final int round;

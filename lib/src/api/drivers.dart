@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formula1_data/formula1_data.dart';
 
+/// Get divers data.
+/// If you want information for a specific year, consider using [year].
 Future<List<Driver>> getDrivers({int? year}) async {
   year = year ?? DateTime.now().year;
   List<Driver> drivers = [];

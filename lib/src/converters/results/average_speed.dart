@@ -1,3 +1,4 @@
+/// Average speed data
 class AverageSpeed {
   final String units;
   final double speed;

@@ -3,6 +3,7 @@ import 'package:formula1_data/src/converters/drivers/driver.dart';
 import 'package:formula1_data/src/converters/results/fastest_lap.dart';
 import 'package:formula1_data/src/converters/results/time.dart';
 
+/// Race result data
 class Result {
   final int number;
   final int position;

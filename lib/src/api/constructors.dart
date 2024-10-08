@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formula1_data/src/converters/constructors/constructor.dart';
 
+/// Get constructors data.
+/// If you want information for a specific year, consider using [year].
 Future<List<Constructor>> getConstructors({int? year}) async {
   year = year ?? DateTime.now().year;
   List<Constructor> constructors = [];
