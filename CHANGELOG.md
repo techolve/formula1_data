@@ -1,3 +1,4 @@
-## 0.0.1
+# CHANGELOG
+## 0.1.0
 
-* TODO: Describe initial release.
+* initial release.
