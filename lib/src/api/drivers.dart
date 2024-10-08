@@ -8,7 +8,7 @@ Future<List<Driver>> getDrivers({int? year}) async {
   try {
     Dio dio = Dio();
     final Response response =
-        await dio.get("https://ergast.com/api/f1/$year/drivers.json");
+        await dio.get("https://api.jolpi.ca/ergast/f1/$year/drivers.json");
     final dynamic data = response.data;
     final List<dynamic> driversData = data["MRData"]["DriverTable"]["Drivers"];
     for (var data in driversData) {

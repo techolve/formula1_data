@@ -8,8 +8,8 @@ Future<List<Race>> getResults({int? year, int? round}) async {
 
   try {
     Dio dio = Dio();
-    final Response response =
-        await dio.get("https://ergast.com/api/f1/$year/$round/results.json");
+    final Response response = await dio
+        .get("https://api.jolpi.ca/ergast/f1/$year/$round/results.json");
     final dynamic data = response.data;
     final List<dynamic> racesData = data["MRData"]["RaceTable"]["Races"];
     for (var race in racesData) {

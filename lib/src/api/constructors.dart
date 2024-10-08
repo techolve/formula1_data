@@ -8,7 +8,7 @@ Future<List<Constructor>> getConstructors({int? year}) async {
   try {
     Dio dio = Dio();
     final Response response =
-        await dio.get("https://ergast.com/api/f1/$year/constructors.json");
+        await dio.get("https://api.jolpi.ca/ergast/f1/$year/constructors.json");
 
     final dynamic data = response.data;
     final List<dynamic> constructorsData =

@@ -6,13 +6,17 @@ Future<List<Status>> getStatus() async {
   List<Status> status = [];
   try {
     final Dio dio = Dio();
-    final Response response =
-        await dio.get("http://ergast.com/api/f1/status.json");
+    Map<String, dynamic> param = {"limit": 100};
+    final Response response = await dio.get(
+      "https://api.jolpi.ca/ergast/f1/status.json",
+      queryParameters: param,
+    );
     final data = response.data;
     final List<dynamic> statusData = data["MRData"]["StatusTable"]["Status"];
     for (var data in statusData) {
       final Status s = Status.fromMap(data);
       status.add(s);
+      debugPrint(s.toString());
     }
   } on DioException catch (error) {
     debugPrint(error.message.toString());
