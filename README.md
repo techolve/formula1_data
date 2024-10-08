@@ -1,39 +1,52 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# formula1_data
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+A Dart package of Formula1&trade;.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Sample
+### Constructors
+Get Constructors data.
 
 ```dart
-const like = 'sample';
+import 'package:/formula1_data/formula1_data.dart';
+
+final year = DateTime.now().year;
+final constructors = await getConstructors(year: year);
+print(constructors.toString());
 ```
 
-## Additional information
+### Drivers
+Get Drivers data.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:/formula1_data/formula1_data.dart';
+
+final year = DateTime.now().year;
+final drivers = await getDrivers(year: year);
+print(drivers.toString());
+```
+
+### Results
+Get Results data.
+
+```dart
+import 'package:/formula1_data/formula1_data.dart';
+
+final year = DateTime.now().year;
+final int round = 1;
+final results = await getResults(year: year, round: round);
+print(results.toString());
+```
+
+### Status
+Get Status data.
+
+```dart
+import 'package:/formula1_data/formula1_data.dart';
+
+final status = await getStatus();
+print(status.toString());
+```
+
+## Dataset License
+Basically, the datasets are licensed under [Apache License 2.0](https://github.com/jolpica/jolpica-f1/blob/main/LICENSE)
+1. [jolpica-f1](https://github.com/jolpica/jolpica-f1/blob/main/docs/README.md)
