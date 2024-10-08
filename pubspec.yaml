@@ -1,7 +1,8 @@
 name: formula1_data
-description: "A new Flutter package project."
-version: 0.0.1
-homepage:
+description: "Flutter plugin for getting Formula1 data."
+version: 0.1.1
+repository: https://github.com/own-world-grp/formula1_data
+homepage: https://own-world-grp.net/
 
 environment:
   sdk: ^3.5.3
