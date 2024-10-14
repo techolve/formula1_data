@@ -5,4 +5,7 @@ library formula1_data;
 export './src/api/constructors.dart';
 
 // Converter
-export 'src/converters/converter.dart';
+export './src/converters/converter.dart';
+
+// Widget
+export './src/widget/widget.dart';

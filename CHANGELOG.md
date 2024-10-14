@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 0.1.2
+* Update example.
+* Create ResultTable widget.
+
+## 0.1.2
 * Linked GitHub.
 * Linked Homepage.
 * Add comments.
