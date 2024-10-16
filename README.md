@@ -37,6 +37,16 @@ final results = await getResults(year: year, round: round);
 print(results.toString());
 ```
 
+### Schedule
+Get Schedule data.
+
+```dart
+import 'package:/formula1_data/formula1_data.dart';
+
+final schedules = await getSchedule();
+print(schedules.toString());
+```
+
 ### Status
 Get Status data.
 
