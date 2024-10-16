@@ -14,16 +14,7 @@ Future<List<Driver>> getDrivers({int? year}) async {
     final dynamic data = response.data;
     final List<dynamic> driversData = data["MRData"]["DriverTable"]["Drivers"];
     for (var data in driversData) {
-      final Driver driver = Driver(
-        driverId: data["driverId"],
-        permanentNumber: int.parse(data["permanentNumber"]),
-        code: data["code"],
-        url: data["url"],
-        givenName: data["givenName"],
-        familyName: data["familyName"],
-        dateOfBirth: DateTime.parse(data["dateOfBirth"]),
-        nationality: data["nationality"],
-      );
+      final Driver driver = Driver.fromMap(data);
       drivers.add(driver);
     }
   } on DioException catch (error) {

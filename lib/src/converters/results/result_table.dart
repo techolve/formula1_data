@@ -33,17 +33,19 @@ class Result {
 
   factory Result.fromMap(dynamic map) {
     return Result(
-      number: map["number"],
-      position: map["position"],
+      number: int.parse(map["number"]),
+      position: int.parse(map["position"]),
       positionText: map["positionText"],
-      points: map["points"],
-      driver: map["driver"],
-      constructor: map["constructor"],
-      grid: map["grid"],
-      laps: map["laps"],
+      points: int.parse(map["points"]),
+      driver: Driver.fromMap(map["Driver"]),
+      constructor: Constructor.fromMap(map["Constructor"]),
+      grid: int.parse(map["grid"]),
+      laps: int.parse(map["laps"]),
       status: map["status"],
-      time: map["time"],
-      fastestLap: map["fastestLap"],
+      time: map.containsKey("Time") ? Time.fromMap(map["Time"]) : null,
+      fastestLap: map.containsKey("FastestLap")
+          ? FastestLap.fromMap(map["FastestLap"])
+          : null,
     );
   }
 

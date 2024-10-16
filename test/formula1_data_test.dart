@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:formula1_data/formula1_data.dart';
@@ -6,7 +5,6 @@ import 'package:formula1_data/src/api/drivers.dart';
 import 'package:formula1_data/src/api/results.dart';
 import 'package:formula1_data/src/api/schedules.dart';
 import 'package:formula1_data/src/api/status.dart';
-import 'package:formula1_data/src/converters/schedules/schedule.dart';
 import 'package:logger/web.dart';
 
 void main() {

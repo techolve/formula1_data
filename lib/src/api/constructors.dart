@@ -17,12 +17,7 @@ Future<List<Constructor>> getConstructors({int? year}) async {
         data["MRData"]["ConstructorTable"]["Constructors"];
 
     for (var data in constructorsData) {
-      final Constructor constructor = Constructor(
-        constructorsId: data["constructorId"],
-        url: data["url"],
-        name: data["name"],
-        nationality: data["nationality"],
-      );
+      final Constructor constructor = Constructor.fromMap(data);
       constructors.add(constructor);
     }
   } on DioException catch (error) {
