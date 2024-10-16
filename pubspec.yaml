@@ -1,6 +1,6 @@
 name: formula1_data
 description: "Flutter plugin for getting Formula1 data."
-version: 0.1.2
+version: 0.1.4
 repository: https://github.com/own-world-grp/formula1_data
 homepage: https://own-world-grp.net/
 
@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^5.7.0
+  logger: ^2.4.0
 
 dev_dependencies:
   flutter_test:

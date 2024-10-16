@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 0.1.4
+* Update refactoring.
+* Create getSchedule method.
+
+## 0.1.3
+* Update example.
+* Create ResultTable widget.
+
 ## 0.1.2
 * Linked GitHub.
 * Linked Homepage.

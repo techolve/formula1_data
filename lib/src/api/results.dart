@@ -18,25 +18,7 @@ Future<List<Race>> getResults({int? year, int? round}) async {
       final List<dynamic> resultsData = race["Results"];
       final List<Result> resultsArray = [];
       for (var data in resultsData) {
-        final dataMap = data as Map<String, dynamic>;
-
-        final Result resultTable = Result(
-          number: int.parse(dataMap["number"]),
-          position: int.parse(dataMap["position"]),
-          positionText: dataMap["positionText"],
-          points: int.parse(dataMap["points"]),
-          driver: Driver.fromMap(dataMap["Driver"]),
-          constructor: Constructor.fromMap(dataMap["Constructor"]),
-          grid: int.parse(dataMap["grid"]),
-          laps: int.parse(dataMap["laps"]),
-          status: dataMap["status"],
-          time: dataMap.containsKey("Time")
-              ? Time.fromMap(dataMap["Time"])
-              : null,
-          fastestLap: dataMap.containsKey("FastestLap")
-              ? FastestLap.fromMap(dataMap["FastestLap"])
-              : null,
-        );
+        final Result resultTable = Result.fromMap(data);
         resultsArray.add(resultTable);
       }
       final Race result = Race(

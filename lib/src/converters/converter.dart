@@ -5,4 +5,5 @@ export './results/fastest_lap.dart';
 export './results/result_table.dart';
 export './results/result.dart';
 export './results/time.dart';
+export './schedules/schedule.dart';
 export './status/status.dart';
