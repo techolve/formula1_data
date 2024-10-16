@@ -2,7 +2,7 @@
 library formula1_data;
 
 // API
-export './src/api/constructors.dart';
+export './src/api/api.dart';
 
 // Converter
 export './src/converters/converter.dart';
