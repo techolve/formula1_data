@@ -17,7 +17,6 @@ Future<List<Status>> getStatus() async {
     for (var data in statusData) {
       final Status s = Status.fromMap(data);
       status.add(s);
-      debugPrint(s.toString());
     }
   } on DioException catch (error) {
     debugPrint(error.message.toString());

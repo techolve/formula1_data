@@ -15,4 +15,9 @@ class Race {
     required this.raceName,
     required this.resultTable,
   });
+
+  @override
+  String toString() {
+    return "Race(season: $season, round: $round, url: $url, raceName: $raceName, resultTable: $resultTable)";
+  }
 }
