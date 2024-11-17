@@ -6,6 +6,3 @@ export './src/api/api.dart';
 
 // Converter
 export './src/converters/converter.dart';
-
-// Widget
-export './src/widget/widget.dart';
