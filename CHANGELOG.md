@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.6
+* Delete widget folder.
+
+## 0.1.5
+* Fixed export files.
+
 ## 0.1.4
 * Update refactoring.
 * Create getSchedule method.
