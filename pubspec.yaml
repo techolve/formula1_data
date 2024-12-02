@@ -1,6 +1,6 @@
 name: formula1_data
 description: "A Flutter plugin for retrieving and graphing Formula1™ data."
-version: 0.1.6
+version: 0.1.7
 repository: https://github.com/own-world-grp/formula1_data
 homepage: https://own-world-grp.net/
 
