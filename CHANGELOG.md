@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.8
+* Fixed export files.
+
+## 0.1.7
+* Create getCircuit method.
+
 ## 0.1.6
 * Delete widget folder.
 

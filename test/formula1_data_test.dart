@@ -5,6 +5,7 @@ import 'package:formula1_data/src/api/drivers.dart';
 import 'package:formula1_data/src/api/results.dart';
 import 'package:formula1_data/src/api/schedules.dart';
 import 'package:formula1_data/src/api/status.dart';
+import 'package:formula1_data/src/converters/circuits/circuit.dart';
 import 'package:logger/web.dart';
 
 void main() {
@@ -35,6 +36,11 @@ void main() {
     test('Get status data', () async {
       List<Status> status = await getStatus();
       logger.i(status);
+    });
+
+    test('Get circuit data', () async {
+      List<Circuit> circuits = await getCircuit();
+      logger.i(circuits);
     });
   });
 }

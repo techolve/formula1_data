@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:formula1_data/src/widget/result_table/result_table.dart';
 
 class ExampleApp extends StatelessWidget {
   const ExampleApp({super.key});
@@ -14,7 +13,7 @@ class ExampleApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const ResultTable(),
+      // home: const ResultTable(),
     );
   }
 }
