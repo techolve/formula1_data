@@ -1,3 +1,5 @@
+export './circuits/circuit.dart';
+export './circuits/location.dart';
 export './constructors/constructor.dart';
 export './drivers/driver.dart';
 export './results/average_speed.dart';
@@ -5,5 +7,10 @@ export './results/fastest_lap.dart';
 export './results/result_table.dart';
 export './results/result.dart';
 export './results/time.dart';
+export './schedules/first_practice.dart';
+export './schedules/qualifying.dart';
 export './schedules/schedule.dart';
+export './schedules/second_practice.dart';
+export './schedules/sprint.dart';
+export './schedules/third_practice.dart';
 export './status/status.dart';
