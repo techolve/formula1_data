@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formula1_data/formula1_data.dart';
+import 'package:formula1_data/src/services/formula1_data.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:dio/dio.dart';
@@ -10,18 +11,18 @@ import 'formula1_data_test.mocks.dart';
 
 void main() {
   final logger = Logger();
-  late Formula1Api api;
+  late Formula1Data formula1;
 
   setUp(() {
-    api = Formula1Api();
+    formula1 = Formula1Data();
   });
 
-  group('Formula1Api - Seasons', () {
+  group('Formula1Data - Seasons', () {
     late MockDio mockDio;
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('getSeasons returns list of seasons when API call is successful',
@@ -45,7 +46,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getSeasons();
+      final result = await formula1.getSeasons();
 
       // Assert
       expect(result, isNotNull);
@@ -66,7 +67,7 @@ void main() {
       ));
 
       // Act
-      final result = await api.getSeasons();
+      final result = await formula1.getSeasons();
 
       // Assert
       expect(result, isNull);
@@ -83,7 +84,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getSeasons();
+      final result = await formula1.getSeasons();
 
       // Assert
       expect(result, isNull);
@@ -91,12 +92,12 @@ void main() {
     });
   });
 
-  group('Formula1Api - Circuits', () {
+  group('Formula1Data - Circuits', () {
     late MockDio mockDio;
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('getCircuits returns list of circuits when API call is successful',
@@ -140,7 +141,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getCircuits();
+      final result = await formula1.getCircuits();
 
       // Assert
       expect(result, isNotNull);
@@ -165,7 +166,7 @@ void main() {
       ));
 
       // Act
-      final result = await api.getCircuits();
+      final result = await formula1.getCircuits();
 
       // Assert
       expect(result, isNull);
@@ -182,7 +183,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getCircuits();
+      final result = await formula1.getCircuits();
 
       // Assert
       expect(result, isNull);
@@ -190,12 +191,12 @@ void main() {
     });
   });
 
-  group('Formula1Api - Races', () {
+  group('Formula1Data - Races', () {
     late MockDio mockDio;
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('getRaces returns list of races when API call is successful',
@@ -255,7 +256,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getRaces();
+      final result = await formula1.getRaces();
 
       // Assert
       expect(result, isNotNull);
@@ -314,7 +315,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getRaces(season: 2023);
+      final result = await formula1.getRaces(season: 2023);
 
       // Assert
       expect(result, isNotNull);
@@ -334,7 +335,7 @@ void main() {
       ));
 
       // Act
-      final result = await api.getRaces();
+      final result = await formula1.getRaces();
 
       // Assert
       expect(result, isNull);
@@ -351,7 +352,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getRaces();
+      final result = await formula1.getRaces();
 
       // Assert
       expect(result, isNull);
@@ -359,12 +360,12 @@ void main() {
     });
   });
 
-  group('Formula1Api - Constructors', () {
+  group('Formula1Data - Constructors', () {
     late MockDio mockDio;
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test(
@@ -405,7 +406,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getConstructors();
+      final result = await formula1.getConstructors();
 
       // Assert
       expect(result, isNotNull);
@@ -431,7 +432,7 @@ void main() {
       ));
 
       // Act
-      final result = await api.getConstructors();
+      final result = await formula1.getConstructors();
 
       // Assert
       expect(result, isNull);
@@ -448,7 +449,7 @@ void main() {
           ));
 
       // Act
-      final result = await api.getConstructors();
+      final result = await formula1.getConstructors();
 
       // Assert
       expect(result, isNull);
@@ -461,7 +462,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get all drivers', () async {
@@ -488,7 +489,7 @@ void main() {
             requestOptions: RequestOptions(path: '/drivers'),
           ));
 
-      final drivers = await api.getDrivers();
+      final drivers = await formula1.getDrivers();
       expect(drivers, isNotNull);
       expect(drivers, isNotEmpty);
       expect(drivers!.first, isA<Driver>());
@@ -519,7 +520,7 @@ void main() {
             requestOptions: RequestOptions(path: '/drivers/2023'),
           ));
 
-      final drivers = await api.getDrivers(season: 2023);
+      final drivers = await formula1.getDrivers(season: 2023);
       expect(drivers, isNotNull);
       expect(drivers, isNotEmpty);
       expect(drivers!.first, isA<Driver>());
@@ -533,7 +534,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get race results', () async {
@@ -603,7 +604,7 @@ void main() {
             requestOptions: RequestOptions(path: '/results/2023/1'),
           ));
 
-      final results = await api.getResults(season: 2023, round: 1);
+      final results = await formula1.getResults(season: 2023, round: 1);
       expect(results, isNotNull);
       expect(results!.length, 1);
 
@@ -630,7 +631,7 @@ void main() {
         requestOptions: RequestOptions(path: '/results/2023/1'),
       ));
 
-      final results = await api.getResults(season: 2023, round: 1);
+      final results = await formula1.getResults(season: 2023, round: 1);
       expect(results, isNull);
       logger.w('API call failed: No results data returned');
     });
@@ -643,7 +644,7 @@ void main() {
             requestOptions: RequestOptions(path: '/results/2023/1'),
           ));
 
-      final results = await api.getResults(season: 2023, round: 1);
+      final results = await formula1.getResults(season: 2023, round: 1);
       expect(results, isNull);
       logger.w('API returned status code 404: No results data found');
     });
@@ -654,7 +655,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get sprint results for specific year', () async {
@@ -727,7 +728,7 @@ void main() {
             requestOptions: RequestOptions(path: '/sprint/2023'),
           ));
 
-      final results = await api.getSprint(year: 2023);
+      final results = await formula1.getSprint(year: 2023);
       expect(results, isNotEmpty);
       expect(results.length, 1);
 
@@ -758,7 +759,7 @@ void main() {
         requestOptions: RequestOptions(path: '/sprint/2023'),
       ));
 
-      final results = await api.getSprint(year: 2023);
+      final results = await formula1.getSprint(year: 2023);
       expect(results, isEmpty);
       logger.w('API call failed: No sprint results returned');
     });
@@ -775,7 +776,7 @@ void main() {
             requestOptions: RequestOptions(path: '/sprint/2023'),
           ));
 
-      final results = await api.getSprint(year: 2023);
+      final results = await formula1.getSprint(year: 2023);
       expect(results, isEmpty);
       logger.w('API returned status code 404: No sprint results found');
     });
@@ -853,7 +854,7 @@ void main() {
             requestOptions: RequestOptions(path: '/sprint/2023'),
           ));
 
-      final results = await api.getSprint(
+      final results = await formula1.getSprint(
         year: 2023,
         offset: 10,
         limit: 5,
@@ -879,7 +880,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get qualifying results for specific year', () async {
@@ -944,7 +945,7 @@ void main() {
             requestOptions: RequestOptions(path: '/2023/qualifying'),
           ));
 
-      final results = await api.getQualifying(year: 2023);
+      final results = await formula1.getQualifying(year: 2023);
       expect(results, isNotEmpty);
       expect(results.length, 1);
 
@@ -966,7 +967,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get pit stops for specific race', () async {
@@ -1029,7 +1030,7 @@ void main() {
             requestOptions: RequestOptions(path: '/2023/1/pitstops'),
           ));
 
-      final results = await api.getPitStops(year: 2023, round: 1);
+      final results = await formula1.getPitStops(year: 2023, round: 1);
       expect(results, isNotEmpty);
       expect(results.length, 1);
 
@@ -1050,7 +1051,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get lap times for specific race', () async {
@@ -1104,7 +1105,7 @@ void main() {
             requestOptions: RequestOptions(path: '/2023/1/laps'),
           ));
 
-      final results = await api.getLapTimes(year: 2023, round: 1);
+      final results = await formula1.getLapTimes(year: 2023, round: 1);
       expect(results, isNotEmpty);
       expect(results.length, 1);
 
@@ -1123,7 +1124,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get driver standings', () async {
@@ -1173,7 +1174,7 @@ void main() {
             requestOptions: RequestOptions(path: '/2023/driverStandings'),
           ));
 
-      final results = await api.getDriverStandings(year: 2023);
+      final results = await formula1.getDriverStandings(year: 2023);
       expect(results, isNotEmpty);
       expect(results.length, 1);
 
@@ -1225,7 +1226,7 @@ void main() {
             requestOptions: RequestOptions(path: '/2023/constructorStandings'),
           ));
 
-      final results = await api.getConstructorStandings(year: 2023);
+      final results = await formula1.getConstructorStandings(year: 2023);
       expect(results, isNotEmpty);
       expect(results.length, 1);
 
@@ -1245,7 +1246,7 @@ void main() {
 
     setUp(() {
       mockDio = MockDio();
-      api.dio = mockDio;
+      formula1.dio = mockDio;
     });
 
     test('Get status', () async {
@@ -1269,7 +1270,7 @@ void main() {
             requestOptions: RequestOptions(path: '/2023/status'),
           ));
 
-      final results = await api.getStatus(year: 2023);
+      final results = await formula1.getStatus(year: 2023);
       expect(results, isNotEmpty);
       expect(results.length, 2);
 
