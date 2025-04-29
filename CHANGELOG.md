@@ -39,7 +39,7 @@
 
 ## 0.1.1
 
-* Update LICENSE. 
+* Update LICENSE.
 
 ## 0.1.0
 
