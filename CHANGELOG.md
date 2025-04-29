@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.0
+
+* Add sprint race related methods (getSprint, getDriverSprint, getConstructorSprint, getSprintByRound)
+* Add qualifying related method (getQualifying)
+* Add race detail methods (getPitStops, getLapTimes, getStatus)
+
 ## 0.2.0
 
 * Create getDriverStanding method.
