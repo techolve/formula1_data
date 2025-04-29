@@ -9,9 +9,9 @@ void main() {
 
   group("Get Formula1 data", () {
     final currentYear = DateTime.now().year;
-    test('Get schedule data', () async {
-      List<Schedule> schedules = await getSchedule(year: currentYear);
-      logger.i(schedules);
+    test('Get race data', () async {
+      List<Race> races = await getRaces(year: currentYear);
+      logger.i(races);
     });
 
     test('Get constructors data', () async {

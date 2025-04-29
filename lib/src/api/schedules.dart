@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formula1_data/src/converters/schedules/schedule.dart';
 
+@Deprecated('Use [getRaces] instead.')
 Future<List<Schedule>> getSchedule({int? year}) async {
   year = year ?? DateTime.now().year;
   List<Schedule> schedules = [];
