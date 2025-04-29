@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.1.0
+
+* Rename Formula1Api class to Formula1Data
+
 ## 1.0.0
 
 * Add sprint race related methods (getSprint, getDriverSprint, getConstructorSprint, getSprintByRound)
