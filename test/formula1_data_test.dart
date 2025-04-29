@@ -12,6 +12,7 @@ void main() {
   final logger = Logger();
   late Formula1Api api;
 
+<<<<<<< HEAD
   setUp(() {
     api = Formula1Api();
   });
@@ -22,6 +23,13 @@ void main() {
     setUp(() {
       mockDio = MockDio();
       api.dio = mockDio;
+=======
+  group("Get Formula1 data", () {
+    final currentYear = DateTime.now().year;
+    test('Get race data', () async {
+      List<Race> races = await getRaces(year: currentYear);
+      logger.i(races);
+>>>>>>> main
     });
 
     test('getSeasons returns list of seasons when API call is successful',
