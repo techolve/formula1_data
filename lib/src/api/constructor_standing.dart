@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:formula1_data/formula1_data.dart';
 import 'package:formula1_data/src/service/dio_client.dart';
 
-Future<List<DriverStanding>> getDriverStanding({int? year}) async {
+Future<dynamic> getConstructorStanding({int? year}) async {
   year = year ?? DateTime.now().year;
-  List<DriverStanding> driverStandings = [];
+  List<ConstructorStanding> constructorStandings = [];
   try {
-    final response = await DioClient().dio.get('/$year/driverstandings.json');
+    final response =
+        await DioClient().dio.get('/$year/constructorstandings.json');
 
     final dynamic data = response.data;
-    final List<dynamic> driverStandingData =
+    final List<dynamic> constructorStandingData =
         data["MRData"]["StandingsTable"]["StandingsLists"];
 
-    // return driverStandingData.map((e) => {DriverStanding.fromMap(e)}).toList();
-    return driverStandingData
+    return constructorStandingData
         .map((e) {
-          return (e["DriverStandings"] as List).map((standing) {
-            return DriverStanding.fromMap(standing);
+          return (e["ConstructorStandings"] as List).map((standing) {
+            return ConstructorStanding.fromMap(standing);
           }).toList();
         })
         .expand((list) => list)
@@ -25,5 +25,5 @@ Future<List<DriverStanding>> getDriverStanding({int? year}) async {
   } on DioException catch (error) {
     debugPrint(error.message.toString());
   }
-  return driverStandings;
+  return constructorStandings;
 }

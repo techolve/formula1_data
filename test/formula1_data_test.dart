@@ -44,5 +44,11 @@ void main() {
           await getDriverStanding(year: currentYear);
       logger.i(driverStandings);
     });
+
+    test('Get constructor standing data', () async {
+      List<ConstructorStanding> constructorStandings =
+          await getConstructorStanding(year: currentYear);
+      logger.i(constructorStandings);
+    });
   });
 }
