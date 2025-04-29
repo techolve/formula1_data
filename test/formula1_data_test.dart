@@ -4,20 +4,24 @@ import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:formula1_data/src/models/driver.dart';
 
 @GenerateMocks([Dio])
 import 'formula1_data_test.mocks.dart';
 
 void main() {
   final logger = Logger();
+  late Formula1Api api;
+
+  setUp(() {
+    api = Formula1Api();
+  });
 
   group('Formula1Api - Seasons', () {
-    late Formula1Api api;
     late MockDio mockDio;
 
     setUp(() {
       mockDio = MockDio();
-      api = Formula1Api();
       api.dio = mockDio;
     });
 
@@ -89,12 +93,10 @@ void main() {
   });
 
   group('Formula1Api - Circuits', () {
-    late Formula1Api api;
     late MockDio mockDio;
 
     setUp(() {
       mockDio = MockDio();
-      api = Formula1Api();
       api.dio = mockDio;
     });
 
@@ -190,12 +192,10 @@ void main() {
   });
 
   group('Formula1Api - Races', () {
-    late Formula1Api api;
     late MockDio mockDio;
 
     setUp(() {
       mockDio = MockDio();
-      api = Formula1Api();
       api.dio = mockDio;
     });
 
@@ -357,6 +357,296 @@ void main() {
       // Assert
       expect(result, isNull);
       logger.w('API returned status code 404: No races data found');
+    });
+  });
+
+  group('Formula1Api - Constructors', () {
+    late MockDio mockDio;
+
+    setUp(() {
+      mockDio = MockDio();
+      api.dio = mockDio;
+    });
+
+    test(
+        'getConstructors returns list of constructors when API call is successful',
+        () async {
+      // Arrange
+      final mockResponse = {
+        'MRData': {
+          'ConstructorTable': {
+            'Constructors': [
+              {
+                'constructorId': 'mercedes',
+                'url': 'https://example.com/mercedes',
+                'name': 'Mercedes',
+                'nationality': 'German'
+              },
+              {
+                'constructorId': 'ferrari',
+                'url': 'https://example.com/ferrari',
+                'name': 'Ferrari',
+                'nationality': 'Italian'
+              },
+              {
+                'constructorId': 'red_bull',
+                'url': 'https://example.com/red_bull',
+                'name': 'Red Bull',
+                'nationality': 'Austrian'
+              }
+            ]
+          }
+        }
+      };
+
+      when(mockDio.get('/constructors')).thenAnswer((_) async => Response(
+            data: mockResponse,
+            statusCode: 200,
+            requestOptions: RequestOptions(path: '/constructors'),
+          ));
+
+      // Act
+      final result = await api.getConstructors();
+
+      // Assert
+      expect(result, isNotNull);
+      expect(result!.length, 3);
+      expect(result[0].constructorId, 'mercedes');
+      expect(result[0].name, 'Mercedes');
+      expect(result[0].nationality, 'German');
+      expect(result[1].constructorId, 'ferrari');
+      expect(result[1].name, 'Ferrari');
+      expect(result[1].nationality, 'Italian');
+      expect(result[2].constructorId, 'red_bull');
+      expect(result[2].name, 'Red Bull');
+      expect(result[2].nationality, 'Austrian');
+
+      // Log results
+      logger.i('Constructors: ${result.map((c) => c.toString()).join(', ')}');
+    });
+
+    test('getConstructors returns null when API call fails', () async {
+      // Arrange
+      when(mockDio.get('/constructors')).thenThrow(DioException(
+        requestOptions: RequestOptions(path: '/constructors'),
+      ));
+
+      // Act
+      final result = await api.getConstructors();
+
+      // Assert
+      expect(result, isNull);
+      logger.w('API call failed: No constructors data returned');
+    });
+
+    test('getConstructors returns null when response status code is not 200',
+        () async {
+      // Arrange
+      when(mockDio.get('/constructors')).thenAnswer((_) async => Response(
+            data: {},
+            statusCode: 404,
+            requestOptions: RequestOptions(path: '/constructors'),
+          ));
+
+      // Act
+      final result = await api.getConstructors();
+
+      // Assert
+      expect(result, isNull);
+      logger.w('API returned status code 404: No constructors data found');
+    });
+  });
+
+  group('Driver Tests', () {
+    late MockDio mockDio;
+
+    setUp(() {
+      mockDio = MockDio();
+      api.dio = mockDio;
+    });
+
+    test('Get all drivers', () async {
+      final mockResponse = {
+        'MRData': {
+          'DriverTable': {
+            'Drivers': [
+              {
+                'driverId': 'max_verstappen',
+                'url': 'https://example.com/max_verstappen',
+                'givenName': 'Max',
+                'familyName': 'Verstappen',
+                'dateOfBirth': '1997-09-30',
+                'nationality': 'Dutch'
+              }
+            ]
+          }
+        }
+      };
+
+      when(mockDio.get('/drivers')).thenAnswer((_) async => Response(
+            data: mockResponse,
+            statusCode: 200,
+            requestOptions: RequestOptions(path: '/drivers'),
+          ));
+
+      final drivers = await api.getDrivers();
+      expect(drivers, isNotNull);
+      expect(drivers, isNotEmpty);
+      expect(drivers!.first, isA<Driver>());
+      logger.i('Drivers: ${drivers.map((d) => d.toString()).join(', ')}');
+    });
+
+    test('Get drivers for specific season', () async {
+      final mockResponse = {
+        'MRData': {
+          'DriverTable': {
+            'Drivers': [
+              {
+                'driverId': 'max_verstappen',
+                'url': 'https://example.com/max_verstappen',
+                'givenName': 'Max',
+                'familyName': 'Verstappen',
+                'dateOfBirth': '1997-09-30',
+                'nationality': 'Dutch'
+              }
+            ]
+          }
+        }
+      };
+
+      when(mockDio.get('/drivers/2023')).thenAnswer((_) async => Response(
+            data: mockResponse,
+            statusCode: 200,
+            requestOptions: RequestOptions(path: '/drivers/2023'),
+          ));
+
+      final drivers = await api.getDrivers(season: 2023);
+      expect(drivers, isNotNull);
+      expect(drivers, isNotEmpty);
+      expect(drivers!.first, isA<Driver>());
+      logger.i(
+          'Drivers for 2023: ${drivers.map((d) => d.toString()).join(', ')}');
+    });
+  });
+
+  group('Result Tests', () {
+    late MockDio mockDio;
+
+    setUp(() {
+      mockDio = MockDio();
+      api.dio = mockDio;
+    });
+
+    test('Get race results', () async {
+      final mockResponse = {
+        'MRData': {
+          'RaceTable': {
+            'Races': [
+              {
+                'season': '2023',
+                'round': '1',
+                'url': 'https://example.com/2023/1',
+                'raceName': 'Bahrain Grand Prix',
+                'Circuit': {
+                  'circuitId': 'bahrain',
+                  'url': 'https://example.com/bahrain',
+                  'circuitName': 'Bahrain International Circuit',
+                  'Location': {
+                    'lat': '26.0325',
+                    'long': '50.5106',
+                    'locality': 'Sakhir',
+                    'country': 'Bahrain'
+                  }
+                },
+                'date': '2023-03-05',
+                'time': '15:00:00Z',
+                'Results': [
+                  {
+                    'number': '1',
+                    'position': '1',
+                    'positionText': '1',
+                    'points': '25',
+                    'Driver': {
+                      'driverId': 'max_verstappen',
+                      'url': 'https://example.com/max_verstappen',
+                      'givenName': 'Max',
+                      'familyName': 'Verstappen',
+                      'dateOfBirth': '1997-09-30',
+                      'nationality': 'Dutch'
+                    },
+                    'Constructor': {
+                      'constructorId': 'red_bull',
+                      'url': 'https://example.com/red_bull',
+                      'name': 'Red Bull',
+                      'nationality': 'Austrian'
+                    },
+                    'grid': '1',
+                    'laps': '57',
+                    'status': 'Finished',
+                    'Time': {'millis': '5523897', 'time': '1:33:56.736'},
+                    'FastestLap': {
+                      'rank': '1',
+                      'lap': '44',
+                      'Time': {'time': '1:33.996'},
+                      'AverageSpeed': {'units': 'kph', 'speed': '207.235'}
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      };
+
+      when(mockDio.get('/results/2023/1')).thenAnswer((_) async => Response(
+            data: mockResponse,
+            statusCode: 200,
+            requestOptions: RequestOptions(path: '/results/2023/1'),
+          ));
+
+      final results = await api.getResults(season: 2023, round: 1);
+      expect(results, isNotNull);
+      expect(results!.length, 1);
+
+      final result = results.first;
+      expect(result.position, 1);
+      expect(result.points, 25);
+      expect(result.driver.driverId, 'max_verstappen');
+      expect(result.constructor.constructorId, 'red_bull');
+      expect(result.grid, 1);
+      expect(result.laps, 57);
+      expect(result.status, 'Finished');
+      expect(result.time?.time, '1:33:56.736');
+      expect(result.fastestLap?.rank, 1);
+      expect(result.fastestLap?.lap, 44);
+      expect(result.fastestLap?.time.time, '1:33.996');
+      expect(result.fastestLap?.averageSpeed.units, 'kph');
+      expect(result.fastestLap?.averageSpeed.speed, 207.235);
+
+      logger.i('Race Results: ${results.map((r) => r.toString()).join(', ')}');
+    });
+
+    test('Get race results returns null when API call fails', () async {
+      when(mockDio.get('/results/2023/1')).thenThrow(DioException(
+        requestOptions: RequestOptions(path: '/results/2023/1'),
+      ));
+
+      final results = await api.getResults(season: 2023, round: 1);
+      expect(results, isNull);
+      logger.w('API call failed: No results data returned');
+    });
+
+    test('Get race results returns null when response status code is not 200',
+        () async {
+      when(mockDio.get('/results/2023/1')).thenAnswer((_) async => Response(
+            data: {},
+            statusCode: 404,
+            requestOptions: RequestOptions(path: '/results/2023/1'),
+          ));
+
+      final results = await api.getResults(season: 2023, round: 1);
+      expect(results, isNull);
+      logger.w('API returned status code 404: No results data found');
     });
   });
 }
