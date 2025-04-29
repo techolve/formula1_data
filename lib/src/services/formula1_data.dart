@@ -12,11 +12,11 @@ import '../models/lap.dart';
 import '../models/standing.dart';
 import '../models/status.dart';
 
-class Formula1Api {
+class Formula1Data {
   Dio dio;
   final String _baseUrl = 'https://api.jolpi.ca/ergast/f1';
 
-  Formula1Api() : dio = Dio() {
+  Formula1Data() : dio = Dio() {
     dio.options.baseUrl = _baseUrl;
   }
 
