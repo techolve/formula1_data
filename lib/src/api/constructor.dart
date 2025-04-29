@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:formula1_data/src/converters/constructors/constructor.dart';
+import 'package:formula1_data/src/converters/constructor/constructor.dart';
 
 /// Get constructors data.
 /// If you want information for a specific year, consider using [year].

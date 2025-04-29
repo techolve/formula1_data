@@ -1,6 +1,8 @@
 export './circuits/circuit.dart';
 export './circuits/location.dart';
-export './constructors/constructor.dart';
+export 'constructor/constructor.dart';
+export 'constructor_standing/constructor_standing.dart';
+export './driver_standing/driver_standing.dart';
 export './drivers/driver.dart';
 export './results/average_speed.dart';
 export './results/fastest_lap.dart';
