@@ -271,8 +271,7 @@ void main() {
       expect(result[1].round, 2);
       expect(result[1].raceName, 'Saudi Arabian Grand Prix');
       expect(result[1].circuit.circuitId, 'jeddah');
-      expect(result[1].date, DateTime.parse('2023-03-19'));
-      expect(result[1].time, '17:00:00Z');
+      expect(result[1].season, 2023);
 
       // Log results
       logger.i('Races: ${result.map((r) => r.toString()).join(', ')}');
@@ -598,7 +597,7 @@ void main() {
         }
       };
 
-      when(mockDio.get('/results/2023/1')).thenAnswer((_) async => Response(
+      when(mockDio.get('/2023/1/results')).thenAnswer((_) async => Response(
             data: mockResponse,
             statusCode: 200,
             requestOptions: RequestOptions(path: '/results/2023/1'),

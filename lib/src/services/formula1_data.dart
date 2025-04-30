@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import '../models/season.dart';
 import '../models/circuit.dart';
 import '../models/race.dart';
@@ -60,13 +61,21 @@ class Formula1Data {
           path += '/$round';
         }
       }
+      final logger = Logger();
+      logger.i('Requesting races from path: $path');
       final response = await dio.get(path);
+      logger.i('Response status code: ${response.statusCode}');
+      logger.i('Response data: ${response.data}');
+
       if (response.statusCode == 200) {
         final data = response.data['MRData']['RaceTable']['Races'] as List;
+        logger.i('Parsed races data: $data');
         return data.map((json) => Race.fromJson(json)).toList();
       }
       return null;
     } catch (e) {
+      final logger = Logger();
+      logger.e('Error in getRaces: $e');
       return null;
     } finally {
       dio.close();
@@ -109,7 +118,7 @@ class Formula1Data {
   Future<List<RaceResult>?> getResults(
       {required int season, required int round}) async {
     try {
-      final response = await dio.get('/$season/results/$round');
+      final response = await dio.get('/$season/$round/results');
       if (response.statusCode == 200) {
         final races = response.data['MRData']['RaceTable']['Races'] as List;
         if (races.isEmpty) {
@@ -120,7 +129,11 @@ class Formula1Data {
       }
       return null;
     } catch (e) {
+      final logger = Logger();
+      logger.e('Error in getResults: $e');
       return null;
+    } finally {
+      dio.close();
     }
   }
 

@@ -22,7 +22,7 @@ class Race {
   final Circuit circuit;
 
   /// The season to which this race belongs.
-  final Season season;
+  final int season;
 
   /// Creates a new [Race] instance.
   ///
@@ -33,12 +33,12 @@ class Race {
   /// [circuit] is the circuit where the race is held.
   /// [season] is the season to which this race belongs.
   Race({
+    required this.season,
     required this.raceName,
     required this.round,
     required this.date,
     required this.time,
     required this.circuit,
-    required this.season,
   });
 
   /// Creates a [Race] instance from a JSON object.
@@ -57,12 +57,12 @@ class Race {
       date: json['date'],
       time: json['time'],
       circuit: Circuit.fromJson(json['Circuit']),
-      season: Season.fromJson(json['Season']),
+      season: int.parse(json['season']),
     );
   }
 
   @override
   String toString() {
-    return 'Race(raceName: $raceName, round: $round, date: $date, time: $time, circuit: ${circuit.circuitId}, season: ${season.year})';
+    return 'Race(raceName: $raceName, round: $round, date: $date, time: $time, circuit: ${circuit.circuitId}, season: $season)';
   }
 }
