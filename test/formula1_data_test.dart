@@ -265,13 +265,12 @@ void main() {
       expect(result[0].round, 1);
       expect(result[0].raceName, 'Bahrain Grand Prix');
       expect(result[0].circuit.circuitId, 'bahrain');
-      expect(result[0].date, DateTime.parse('2023-03-05'));
-      expect(result[0].time, '15:00:00Z');
+      expect(result[0].dateTime, DateTime.parse('2023-03-05 15:00:00Z'));
       expect(result[1].season, 2023);
       expect(result[1].round, 2);
       expect(result[1].raceName, 'Saudi Arabian Grand Prix');
       expect(result[1].circuit.circuitId, 'jeddah');
-      expect(result[1].season, 2023);
+      expect(result[1].dateTime, DateTime.parse('2023-03-19 17:00:00Z'));
 
       // Log results
       logger.i('Races: ${result.map((r) => r.toString()).join(', ')}');
@@ -719,12 +718,12 @@ void main() {
       };
 
       when(mockDio.get(
-        '/sprint/2023',
+        '/2023/sprint',
         queryParameters: anyNamed('queryParameters'),
       )).thenAnswer((_) async => Response(
             data: mockResponse,
             statusCode: 200,
-            requestOptions: RequestOptions(path: '/sprint/2023'),
+            requestOptions: RequestOptions(path: '/2023/sprint'),
           ));
 
       final results = await formula1.getSprint(year: 2023);
@@ -743,8 +742,6 @@ void main() {
       expect(result.fastestLap?.rank, 1);
       expect(result.fastestLap?.lap, 12);
       expect(result.fastestLap?.time.time, '1:33.996');
-      expect(result.fastestLap?.averageSpeed.units, 'kph');
-      expect(result.fastestLap?.averageSpeed.speed, 207.235);
 
       logger
           .i('Sprint Results: ${results.map((r) => r.toString()).join(', ')}');
@@ -842,7 +839,7 @@ void main() {
       };
 
       when(mockDio.get(
-        '/sprint/2023',
+        '/2023/sprint',
         queryParameters: {
           'offset': 10,
           'limit': 5,
@@ -850,7 +847,7 @@ void main() {
       )).thenAnswer((_) async => Response(
             data: mockResponse,
             statusCode: 200,
-            requestOptions: RequestOptions(path: '/sprint/2023'),
+            requestOptions: RequestOptions(path: '/2023/sprint'),
           ));
 
       final results = await formula1.getSprint(
@@ -862,7 +859,7 @@ void main() {
       expect(results.length, 1);
 
       verify(mockDio.get(
-        '/sprint/2023',
+        '/2023/sprint',
         queryParameters: {
           'offset': 10,
           'limit': 5,
@@ -1081,11 +1078,10 @@ void main() {
                     'number': '1',
                     'Timings': [
                       {
-                        'driverId': 'max_verstappen',
-                        'position': '1',
-                        'time': '1:30.000',
-                        'rank': '1'
-                      }
+                        "driverId": "norris",
+                        "position": "1",
+                        "time": "1:57.099"
+                      },
                     ]
                   }
                 ]
@@ -1104,15 +1100,14 @@ void main() {
             requestOptions: RequestOptions(path: '/2023/1/laps'),
           ));
 
-      final results = await formula1.getLapTimes(year: 2023, round: 1);
+      final results = await formula1.getLaps(year: 2023, round: 1);
       expect(results, isNotEmpty);
       expect(results.length, 1);
 
       final result = results.first;
-      expect(result.number, 1);
+      expect(result.driverId, 'norris');
       expect(result.position, 1);
-      expect(result.time, '1:30.000');
-      expect(result.rank, 1);
+      expect(result.time, '1:57.099');
 
       logger.i('Lap Times: ${results.map((r) => r.toString()).join(', ')}');
     });

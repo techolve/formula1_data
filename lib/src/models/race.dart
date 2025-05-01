@@ -13,10 +13,7 @@ class Race {
   final int round;
 
   /// The date when the race is held.
-  final String date;
-
-  /// The time when the race is held.
-  final String time;
+  final DateTime dateTime;
 
   /// The circuit where the race is held.
   final Circuit circuit;
@@ -28,16 +25,14 @@ class Race {
   ///
   /// [raceName] is the name of the race.
   /// [round] is the round number of the race in the season.
-  /// [date] is the date when the race is held.
-  /// [time] is the time when the race is held.
+  /// [dateTime] is the date and time when the race is held.
   /// [circuit] is the circuit where the race is held.
   /// [season] is the season to which this race belongs.
   Race({
     required this.season,
     required this.raceName,
     required this.round,
-    required this.date,
-    required this.time,
+    required this.dateTime,
     required this.circuit,
   });
 
@@ -54,8 +49,7 @@ class Race {
     return Race(
       raceName: json['raceName'],
       round: int.parse(json['round']),
-      date: json['date'],
-      time: json['time'],
+      dateTime: DateTime.parse('${json['date']} ${json['time']}'),
       circuit: Circuit.fromJson(json['Circuit']),
       season: int.parse(json['season']),
     );
@@ -63,6 +57,6 @@ class Race {
 
   @override
   String toString() {
-    return 'Race(raceName: $raceName, round: $round, date: $date, time: $time, circuit: ${circuit.circuitId}, season: $season)';
+    return 'Race(raceName: $raceName, round: $round, dateTime: $dateTime, circuit: ${circuit.circuitId}, season: $season)';
   }
 }

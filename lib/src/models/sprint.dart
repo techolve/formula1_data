@@ -110,7 +110,7 @@ class SprintResult {
 /// including the time in milliseconds and a formatted time string.
 class SprintTime {
   /// The time in milliseconds.
-  final int millis;
+  final int? millis;
 
   /// The formatted time string (e.g., "1:30.123").
   final String time;
@@ -120,7 +120,7 @@ class SprintTime {
   /// [millis] is the time in milliseconds.
   /// [time] is the formatted time string.
   SprintTime({
-    required this.millis,
+    this.millis,
     required this.time,
   });
 
@@ -131,7 +131,7 @@ class SprintTime {
   /// - 'time': A string representing the formatted time
   factory SprintTime.fromJson(Map<String, dynamic> json) {
     return SprintTime(
-      millis: int.parse(json['millis']),
+      millis: json['millis'] != null ? int.parse(json['millis']) : null,
       time: json['time'],
     );
   }
