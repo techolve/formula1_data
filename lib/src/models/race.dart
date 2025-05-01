@@ -1,5 +1,4 @@
 import 'circuit.dart';
-import 'season.dart';
 
 /// Represents a Formula 1 race.
 ///

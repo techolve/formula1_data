@@ -1,6 +1,3 @@
-import 'driver.dart';
-import 'constructor.dart';
-
 /// Represents a lap time recorded during a Formula 1 race.
 ///
 /// This class contains information about a specific lap, including
