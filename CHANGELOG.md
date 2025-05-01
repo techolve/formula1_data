@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1.2.1
+
+* Fix getRace method to handle datetime fields correctly
+
+## 1.2.0
+
+* Fix datetime handling by combining separate date and time fields into a single datetime field
+* Fix various datetime related bugs and inconsistencies
+
 ## 1.1.0
 
 * Rename Formula1Api class to Formula1Data

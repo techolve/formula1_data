@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import '../models/season.dart';
 import '../models/circuit.dart';
 import '../models/race.dart';
@@ -53,20 +54,29 @@ class Formula1Data {
 
   Future<List<Race>?> getRaces({int? season, int? round}) async {
     try {
-      String path = '/races';
+      String path = '';
       if (season != null) {
         path += '/$season';
         if (round != null) {
           path += '/$round';
         }
       }
+      path += '/races';
+      final logger = Logger();
+      logger.i('Requesting races from path: $path');
       final response = await dio.get(path);
+      logger.i('Response status code: ${response.statusCode}');
+      logger.i('Response data: ${response.data}');
+
       if (response.statusCode == 200) {
         final data = response.data['MRData']['RaceTable']['Races'] as List;
+        logger.i('Parsed races data: $data');
         return data.map((json) => Race.fromJson(json)).toList();
       }
       return null;
     } catch (e) {
+      final logger = Logger();
+      logger.e('Error in getRaces: $e');
       return null;
     } finally {
       dio.close();
@@ -109,7 +119,7 @@ class Formula1Data {
   Future<List<RaceResult>?> getResults(
       {required int season, required int round}) async {
     try {
-      final response = await dio.get('/$season/results/$round');
+      final response = await dio.get('/$season/$round/results');
       if (response.statusCode == 200) {
         final races = response.data['MRData']['RaceTable']['Races'] as List;
         if (races.isEmpty) {
@@ -120,7 +130,11 @@ class Formula1Data {
       }
       return null;
     } catch (e) {
+      final logger = Logger();
+      logger.e('Error in getResults: $e');
       return null;
+    } finally {
+      dio.close();
     }
   }
 
@@ -131,10 +145,12 @@ class Formula1Data {
     int limit = 30,
   }) async {
     try {
-      String path = '/$year/sprint';
+      String path = '/$year';
       if (round != null) {
         path += '/$round';
       }
+      path += '/sprint';
+
       final response = await dio.get(
         path,
         queryParameters: {
@@ -155,97 +171,8 @@ class Formula1Data {
       }
       return [];
     } catch (e) {
-      return [];
-    }
-  }
-
-  Future<List<SprintResult>> getDriverSprint({
-    required String driverId,
-    int offset = 0,
-    int limit = 30,
-  }) async {
-    try {
-      final response = await dio.get(
-        '/drivers/$driverId/sprint',
-        queryParameters: {
-          'offset': offset,
-          'limit': limit,
-        },
-      );
-      if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
-        final results = <SprintResult>[];
-        for (final race in data) {
-          final sprintResults = race['SprintResults'] as List;
-          for (final result in sprintResults) {
-            results.add(SprintResult.fromJson(result));
-          }
-        }
-        return results;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  Future<List<SprintResult>> getConstructorSprint({
-    required String constructorId,
-    int offset = 0,
-    int limit = 30,
-  }) async {
-    try {
-      final response = await dio.get(
-        '/constructors/$constructorId/sprint',
-        queryParameters: {
-          'offset': offset,
-          'limit': limit,
-        },
-      );
-      if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
-        final results = <SprintResult>[];
-        for (final race in data) {
-          final sprintResults = race['SprintResults'] as List;
-          for (final result in sprintResults) {
-            results.add(SprintResult.fromJson(result));
-          }
-        }
-        return results;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  Future<List<SprintResult>> getSprintByRound({
-    required int year,
-    required int round,
-    int offset = 0,
-    int limit = 30,
-  }) async {
-    try {
-      final response = await dio.get(
-        '/$year/sprint/$round',
-        queryParameters: {
-          'offset': offset,
-          'limit': limit,
-        },
-      );
-      if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
-        final results = <SprintResult>[];
-        for (final race in data) {
-          final sprintResults = race['SprintResults'] as List;
-          for (final result in sprintResults) {
-            results.add(SprintResult.fromJson(result));
-          }
-        }
-        return results;
-      }
-      return [];
-    } catch (e) {
+      final logger = Logger();
+      logger.e('Error in getSprint: $e');
       return [];
     }
   }
@@ -343,7 +270,7 @@ class Formula1Data {
   ///
   /// Returns a list of [LapTime] objects.
   /// Returns an empty list if the API call fails or no results are found.
-  Future<List<LapTime>> getLapTimes({
+  Future<List<LapTime>> getLaps({
     required int year,
     required int round,
     int offset = 0,
@@ -373,6 +300,8 @@ class Formula1Data {
       }
       return [];
     } catch (e) {
+      final logger = Logger();
+      logger.e('Error in getLaps: $e');
       return [];
     }
   }
