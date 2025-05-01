@@ -54,13 +54,14 @@ class Formula1Data {
 
   Future<List<Race>?> getRaces({int? season, int? round}) async {
     try {
-      String path = '/races';
+      String path = '';
       if (season != null) {
         path += '/$season';
         if (round != null) {
           path += '/$round';
         }
       }
+      path += '/races';
       final logger = Logger();
       logger.i('Requesting races from path: $path');
       final response = await dio.get(path);

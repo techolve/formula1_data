@@ -305,10 +305,10 @@ void main() {
         }
       };
 
-      when(mockDio.get('/races/2023')).thenAnswer((_) async => Response(
+      when(mockDio.get('/2023/races')).thenAnswer((_) async => Response(
             data: mockResponse,
             statusCode: 200,
-            requestOptions: RequestOptions(path: '/races/2023'),
+            requestOptions: RequestOptions(path: '/2023/races'),
           ));
 
       // Act
