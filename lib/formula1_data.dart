@@ -1,5 +1,5 @@
 /// A Formula1 data package.
-library formula1_data;
+library;
 
 export 'src/models/season.dart';
 export 'src/models/location.dart';

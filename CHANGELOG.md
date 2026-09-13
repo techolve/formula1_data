@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2.0.0
+
+* **Breaking:** Convert from a Flutter plugin to a pure Dart package (remove the `flutter` SDK dependency); the package can now be used in any Dart project, not just Flutter
+* Fix a bug where `Formula1Data` closed its shared `Dio` client after the first API call, causing every subsequent call on the same instance to silently fail and return `null`/an empty list
+* Correct the package description, which incorrectly referred to graphing/charting features that don't exist
+* Add an `example/` directory with a runnable usage sample
+* Add `topics` and `issue_tracker` to `pubspec.yaml`
+* Switch from `flutter_lints` to `lints` and update dev dependencies to their latest versions
+* Remove an unused duplicate `PitStop` model file
+* Fix incorrect field/method names in the README usage sample (`Circuit.circuitName`, `getLaps`, `PitStop.driver.driverId`)
+
 ## 1.2.1
 
 * Fix getRace method to handle datetime fields correctly

@@ -31,8 +31,6 @@ class Formula1Data {
       return null;
     } catch (e) {
       return null;
-    } finally {
-      dio.close();
     }
   }
 
@@ -47,8 +45,6 @@ class Formula1Data {
       return null;
     } catch (e) {
       return null;
-    } finally {
-      dio.close();
     }
   }
 
@@ -78,8 +74,6 @@ class Formula1Data {
       final logger = Logger();
       logger.e('Error in getRaces: $e');
       return null;
-    } finally {
-      dio.close();
     }
   }
 
@@ -94,8 +88,6 @@ class Formula1Data {
       return null;
     } catch (e) {
       return null;
-    } finally {
-      dio.close();
     }
   }
 
@@ -133,8 +125,6 @@ class Formula1Data {
       final logger = Logger();
       logger.e('Error in getResults: $e');
       return null;
-    } finally {
-      dio.close();
     }
   }
 

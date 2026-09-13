@@ -1,15 +1,6 @@
-# formula1_data
-
-A Dart package of Formula1&trade;.
-
-## Sample
-
-Here are some examples of how to use the package:
-
-```dart
 import 'package:formula1_data/formula1_data.dart';
 
-void main() async {
+Future<void> main() async {
   final formula1 = Formula1Data();
 
   // Get all seasons
@@ -26,27 +17,41 @@ void main() async {
 
   // Get race results for a specific race
   final results = await formula1.getResults(season: 2023, round: 1);
-  print('Race results: ${results?.map((r) => '${r.driver.givenName} ${r.driver.familyName}: ${r.position}').join(', ')}');
+  print(
+    'Race results: ${results?.map((r) => '${r.driver.givenName} ${r.driver.familyName}: ${r.position}').join(', ')}',
+  );
 
   // Get driver standings
   final driverStandings = await formula1.getDriverStandings(year: 2023);
-  print('Driver standings: ${driverStandings.map((s) => '${s.driver.givenName} ${s.driver.familyName}: ${s.points}').join(', ')}');
+  print(
+    'Driver standings: ${driverStandings.map((s) => '${s.driver.givenName} ${s.driver.familyName}: ${s.points}').join(', ')}',
+  );
 
   // Get constructor standings
-  final constructorStandings = await formula1.getConstructorStandings(year: 2023);
-  print('Constructor standings: ${constructorStandings.map((s) => '${s.constructor.name}: ${s.points}').join(', ')}');
+  final constructorStandings = await formula1.getConstructorStandings(
+    year: 2023,
+  );
+  print(
+    'Constructor standings: ${constructorStandings.map((s) => '${s.constructor.name}: ${s.points}').join(', ')}',
+  );
 
   // Get qualifying results
   final qualifying = await formula1.getQualifying(year: 2023, round: 1);
-  print('Qualifying results: ${qualifying.map((q) => '${q.driver.givenName} ${q.driver.familyName}: ${q.position}').join(', ')}');
+  print(
+    'Qualifying results: ${qualifying.map((q) => '${q.driver.givenName} ${q.driver.familyName}: ${q.position}').join(', ')}',
+  );
 
   // Get sprint results
   final sprint = await formula1.getSprint(year: 2023, round: 1);
-  print('Sprint results: ${sprint.map((s) => '${s.driver.givenName} ${s.driver.familyName}: ${s.position}').join(', ')}');
+  print(
+    'Sprint results: ${sprint.map((s) => '${s.driver.givenName} ${s.driver.familyName}: ${s.position}').join(', ')}',
+  );
 
   // Get pit stops
   final pitStops = await formula1.getPitStops(year: 2023, round: 1);
-  print('Pit stops: ${pitStops.map((p) => '${p.driver.driverId}: ${p.duration}').join(', ')}');
+  print(
+    'Pit stops: ${pitStops.map((p) => '${p.driver.driverId}: ${p.duration}').join(', ')}',
+  );
 
   // Get lap times
   final laps = await formula1.getLaps(year: 2023, round: 1);
@@ -54,12 +59,6 @@ void main() async {
 
   // Get race status
   final status = await formula1.getStatus(year: 2023);
-  print('Race status: ${status.map((s) => '${s.status}: ${s.count}').join(', ')}');
+  print(
+      'Race status: ${status.map((s) => '${s.status}: ${s.count}').join(', ')}');
 }
-```
-
-## Dataset License
-
-Basically, the datasets are licensed under [Apache License 2.0](https://github.com/jolpica/jolpica-f1/blob/main/LICENSE)
-
-1. [jolpica-f1](https://github.com/jolpica/jolpica-f1/blob/main/docs/README.md)
