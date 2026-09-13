@@ -12,47 +12,100 @@ import '../models/pitstop.dart';
 import '../models/lap.dart';
 import '../models/standing.dart';
 import '../models/status.dart';
+import '../models/paginated_result.dart';
+
+/// The default User-Agent identifying this package to the jolpica-f1 API,
+/// as required by https://github.com/jolpica/jolpica-f1/blob/main/docs/README.md
+const String _packageUserAgent =
+    'formula1_data-dart/2.0.0 (+https://pub.dev/packages/formula1_data)';
 
 class Formula1Data {
   Dio dio;
   final String _baseUrl = 'https://api.jolpi.ca/ergast/f1';
 
-  Formula1Data() : dio = Dio() {
+  /// Creates a new [Formula1Data] client.
+  ///
+  /// [userAgent] lets a consuming application identify itself to the
+  /// jolpica-f1 API, which requires a custom User-Agent on every request.
+  /// When provided, it is prefixed to this package's own User-Agent
+  /// (e.g. `MyApp/1.0.0 formula1_data-dart/2.0.0`); otherwise only this
+  /// package's User-Agent is sent.
+  Formula1Data({String? userAgent}) : dio = Dio() {
     dio.options.baseUrl = _baseUrl;
+    dio.options.headers['User-Agent'] =
+        userAgent != null ? '$userAgent $_packageUserAgent' : _packageUserAgent;
   }
 
-  Future<List<Season>?> getSeasons() async {
+  /// Parses the `total`/`limit`/`offset` pagination fields out of an
+  /// `MRData` envelope.
+  ({int total, int limit, int offset}) _parsePagination(
+    Map<String, dynamic> mrData,
+  ) {
+    return (
+      total: int.parse(mrData['total'] as String),
+      limit: int.parse(mrData['limit'] as String),
+      offset: int.parse(mrData['offset'] as String),
+    );
+  }
+
+  Future<PaginatedResult<Season>> getSeasons({
+    int offset = 0,
+    int limit = 30,
+  }) async {
     try {
-      final response = await dio.get('/seasons');
+      final response = await dio.get(
+        '/seasons',
+        queryParameters: {'offset': offset, 'limit': limit},
+      );
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['SeasonTable']['Seasons'] as List;
-        return data.map((json) => Season.fromJson(json)).toList();
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['SeasonTable']['Seasons'] as List;
+        final pagination = _parsePagination(mrData);
+        return PaginatedResult<Season>(
+          items: data.map((json) => Season.fromJson(json)).toList(),
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return null;
+      return PaginatedResult<Season>.empty(limit: limit, offset: offset);
     } catch (e) {
-      return null;
-    } finally {
-      dio.close();
+      return PaginatedResult<Season>.empty(limit: limit, offset: offset);
     }
   }
 
-  Future<List<Circuit>?> getCircuits() async {
+  Future<PaginatedResult<Circuit>> getCircuits({
+    int offset = 0,
+    int limit = 30,
+  }) async {
     try {
-      final response = await dio.get('/circuits');
+      final response = await dio.get(
+        '/circuits',
+        queryParameters: {'offset': offset, 'limit': limit},
+      );
       if (response.statusCode == 200) {
-        final data =
-            response.data['MRData']['CircuitTable']['Circuits'] as List;
-        return data.map((json) => Circuit.fromJson(json)).toList();
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['CircuitTable']['Circuits'] as List;
+        final pagination = _parsePagination(mrData);
+        return PaginatedResult<Circuit>(
+          items: data.map((json) => Circuit.fromJson(json)).toList(),
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return null;
+      return PaginatedResult<Circuit>.empty(limit: limit, offset: offset);
     } catch (e) {
-      return null;
-    } finally {
-      dio.close();
+      return PaginatedResult<Circuit>.empty(limit: limit, offset: offset);
     }
   }
 
-  Future<List<Race>?> getRaces({int? season, int? round}) async {
+  Future<PaginatedResult<Race>> getRaces({
+    int? season,
+    int? round,
+    int offset = 0,
+    int limit = 30,
+  }) async {
     try {
       String path = '';
       if (season != null) {
@@ -64,81 +117,130 @@ class Formula1Data {
       path += '/races';
       final logger = Logger();
       logger.i('Requesting races from path: $path');
-      final response = await dio.get(path);
+      final response = await dio.get(
+        path,
+        queryParameters: {'offset': offset, 'limit': limit},
+      );
       logger.i('Response status code: ${response.statusCode}');
       logger.i('Response data: ${response.data}');
 
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['RaceTable']['Races'] as List;
         logger.i('Parsed races data: $data');
-        return data.map((json) => Race.fromJson(json)).toList();
+        final pagination = _parsePagination(mrData);
+        return PaginatedResult<Race>(
+          items: data.map((json) => Race.fromJson(json)).toList(),
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return null;
+      return PaginatedResult<Race>.empty(limit: limit, offset: offset);
     } catch (e) {
       final logger = Logger();
       logger.e('Error in getRaces: $e');
-      return null;
-    } finally {
-      dio.close();
+      return PaginatedResult<Race>.empty(limit: limit, offset: offset);
     }
   }
 
-  Future<List<Constructor>?> getConstructors() async {
+  Future<PaginatedResult<Constructor>> getConstructors({
+    int offset = 0,
+    int limit = 30,
+  }) async {
     try {
-      final response = await dio.get('/constructors');
+      final response = await dio.get(
+        '/constructors',
+        queryParameters: {'offset': offset, 'limit': limit},
+      );
       if (response.statusCode == 200) {
-        final data =
-            response.data['MRData']['ConstructorTable']['Constructors'] as List;
-        return data.map((json) => Constructor.fromJson(json)).toList();
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['ConstructorTable']['Constructors'] as List;
+        final pagination = _parsePagination(mrData);
+        return PaginatedResult<Constructor>(
+          items: data.map((json) => Constructor.fromJson(json)).toList(),
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return null;
+      return PaginatedResult<Constructor>.empty(limit: limit, offset: offset);
     } catch (e) {
-      return null;
-    } finally {
-      dio.close();
+      return PaginatedResult<Constructor>.empty(limit: limit, offset: offset);
     }
   }
 
   /// Get all drivers or drivers for a specific season
-  Future<List<Driver>?> getDrivers({int? season}) async {
+  Future<PaginatedResult<Driver>> getDrivers({
+    int? season,
+    int offset = 0,
+    int limit = 30,
+  }) async {
     try {
       final path = season != null ? '/drivers/$season' : '/drivers';
-      final response = await dio.get(path);
+      final response = await dio.get(
+        path,
+        queryParameters: {'offset': offset, 'limit': limit},
+      );
 
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['DriverTable']['Drivers'] as List;
-        return data.map((json) => Driver.fromJson(json)).toList();
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['DriverTable']['Drivers'] as List;
+        final pagination = _parsePagination(mrData);
+        return PaginatedResult<Driver>(
+          items: data.map((json) => Driver.fromJson(json)).toList(),
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return null;
+      return PaginatedResult<Driver>.empty(limit: limit, offset: offset);
     } catch (e) {
-      return null;
+      return PaginatedResult<Driver>.empty(limit: limit, offset: offset);
     }
   }
 
   /// Get race results for a specific race
-  Future<List<RaceResult>?> getResults(
-      {required int season, required int round}) async {
+  Future<PaginatedResult<RaceResult>> getResults({
+    required int season,
+    required int round,
+    int offset = 0,
+    int limit = 30,
+  }) async {
     try {
-      final response = await dio.get('/$season/$round/results');
+      final response = await dio.get(
+        '/$season/$round/results',
+        queryParameters: {'offset': offset, 'limit': limit},
+      );
       if (response.statusCode == 200) {
-        final races = response.data['MRData']['RaceTable']['Races'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final races = mrData['RaceTable']['Races'] as List;
+        final pagination = _parsePagination(mrData);
         if (races.isEmpty) {
-          return [];
+          return PaginatedResult<RaceResult>(
+            items: const [],
+            total: pagination.total,
+            limit: pagination.limit,
+            offset: pagination.offset,
+          );
         }
         final results = races.first['Results'] as List;
-        return results.map((json) => RaceResult.fromJson(json)).toList();
+        return PaginatedResult<RaceResult>(
+          items: results.map((json) => RaceResult.fromJson(json)).toList(),
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return null;
+      return PaginatedResult<RaceResult>.empty(limit: limit, offset: offset);
     } catch (e) {
       final logger = Logger();
       logger.e('Error in getResults: $e');
-      return null;
-    } finally {
-      dio.close();
+      return PaginatedResult<RaceResult>.empty(limit: limit, offset: offset);
     }
   }
 
-  Future<List<SprintResult>> getSprint({
+  Future<PaginatedResult<SprintResult>> getSprint({
     required int year,
     int? round,
     int offset = 0,
@@ -159,7 +261,9 @@ class Formula1Data {
         },
       );
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['RaceTable']['Races'] as List;
+        final pagination = _parsePagination(mrData);
         final results = <SprintResult>[];
         for (final race in data) {
           final sprintResults = race['SprintResults'] as List;
@@ -167,13 +271,18 @@ class Formula1Data {
             results.add(SprintResult.fromJson(result));
           }
         }
-        return results;
+        return PaginatedResult<SprintResult>(
+          items: results,
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return [];
+      return PaginatedResult<SprintResult>.empty(limit: limit, offset: offset);
     } catch (e) {
       final logger = Logger();
       logger.e('Error in getSprint: $e');
-      return [];
+      return PaginatedResult<SprintResult>.empty(limit: limit, offset: offset);
     }
   }
 
@@ -184,9 +293,9 @@ class Formula1Data {
   /// [offset] is the number of results to skip (default: 0).
   /// [limit] is the maximum number of results to return (default: 30).
   ///
-  /// Returns a list of [QualifyingResult] objects.
-  /// Returns an empty list if the API call fails or no results are found.
-  Future<List<QualifyingResult>> getQualifying({
+  /// Returns a [PaginatedResult] of [QualifyingResult] objects.
+  /// Returns an empty result if the API call fails or no results are found.
+  Future<PaginatedResult<QualifyingResult>> getQualifying({
     required int year,
     int? round,
     int offset = 0,
@@ -205,7 +314,9 @@ class Formula1Data {
         },
       );
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['RaceTable']['Races'] as List;
+        final pagination = _parsePagination(mrData);
         final results = <QualifyingResult>[];
         for (final race in data) {
           final qualifyingResults = race['QualifyingResults'] as List;
@@ -213,11 +324,22 @@ class Formula1Data {
             results.add(QualifyingResult.fromJson(result));
           }
         }
-        return results;
+        return PaginatedResult<QualifyingResult>(
+          items: results,
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return [];
+      return PaginatedResult<QualifyingResult>.empty(
+        limit: limit,
+        offset: offset,
+      );
     } catch (e) {
-      return [];
+      return PaginatedResult<QualifyingResult>.empty(
+        limit: limit,
+        offset: offset,
+      );
     }
   }
 
@@ -228,9 +350,9 @@ class Formula1Data {
   /// [offset] is the number of results to skip (default: 0).
   /// [limit] is the maximum number of results to return (default: 30).
   ///
-  /// Returns a list of [PitStop] objects.
-  /// Returns an empty list if the API call fails or no results are found.
-  Future<List<PitStop>> getPitStops({
+  /// Returns a [PaginatedResult] of [PitStop] objects.
+  /// Returns an empty result if the API call fails or no results are found.
+  Future<PaginatedResult<PitStop>> getPitStops({
     required int year,
     required int round,
     int offset = 0,
@@ -245,7 +367,9 @@ class Formula1Data {
         },
       );
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['RaceTable']['Races'] as List;
+        final pagination = _parsePagination(mrData);
         final results = <PitStop>[];
         for (final race in data) {
           final pitStops = race['PitStops'] as List;
@@ -253,11 +377,16 @@ class Formula1Data {
             results.add(PitStop.fromJson(stop));
           }
         }
-        return results;
+        return PaginatedResult<PitStop>(
+          items: results,
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return [];
+      return PaginatedResult<PitStop>.empty(limit: limit, offset: offset);
     } catch (e) {
-      return [];
+      return PaginatedResult<PitStop>.empty(limit: limit, offset: offset);
     }
   }
 
@@ -268,9 +397,9 @@ class Formula1Data {
   /// [offset] is the number of results to skip (default: 0).
   /// [limit] is the maximum number of results to return (default: 30).
   ///
-  /// Returns a list of [LapTime] objects.
-  /// Returns an empty list if the API call fails or no results are found.
-  Future<List<LapTime>> getLaps({
+  /// Returns a [PaginatedResult] of [LapTime] objects.
+  /// Returns an empty result if the API call fails or no results are found.
+  Future<PaginatedResult<LapTime>> getLaps({
     required int year,
     required int round,
     int offset = 0,
@@ -285,7 +414,9 @@ class Formula1Data {
         },
       );
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['RaceTable']['Races'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['RaceTable']['Races'] as List;
+        final pagination = _parsePagination(mrData);
         final results = <LapTime>[];
         for (final race in data) {
           final laps = race['Laps'] as List;
@@ -296,13 +427,18 @@ class Formula1Data {
             }
           }
         }
-        return results;
+        return PaginatedResult<LapTime>(
+          items: results,
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return [];
+      return PaginatedResult<LapTime>.empty(limit: limit, offset: offset);
     } catch (e) {
       final logger = Logger();
       logger.e('Error in getLaps: $e');
-      return [];
+      return PaginatedResult<LapTime>.empty(limit: limit, offset: offset);
     }
   }
 
@@ -313,9 +449,9 @@ class Formula1Data {
   /// [offset] is the number of results to skip (default: 0).
   /// [limit] is the maximum number of results to return (default: 30).
   ///
-  /// Returns a list of [DriverStanding] objects.
-  /// Returns an empty list if the API call fails or no results are found.
-  Future<List<DriverStanding>> getDriverStandings({
+  /// Returns a [PaginatedResult] of [DriverStanding] objects.
+  /// Returns an empty result if the API call fails or no results are found.
+  Future<PaginatedResult<DriverStanding>> getDriverStandings({
     required int year,
     int? round,
     int offset = 0,
@@ -334,8 +470,9 @@ class Formula1Data {
         },
       );
       if (response.statusCode == 200) {
-        final data =
-            response.data['MRData']['StandingsTable']['StandingsLists'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['StandingsTable']['StandingsLists'] as List;
+        final pagination = _parsePagination(mrData);
         final results = <DriverStanding>[];
         for (final standing in data) {
           final driverStandings = standing['DriverStandings'] as List;
@@ -343,11 +480,22 @@ class Formula1Data {
             results.add(DriverStanding.fromJson(driverStanding));
           }
         }
-        return results;
+        return PaginatedResult<DriverStanding>(
+          items: results,
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return [];
+      return PaginatedResult<DriverStanding>.empty(
+        limit: limit,
+        offset: offset,
+      );
     } catch (e) {
-      return [];
+      return PaginatedResult<DriverStanding>.empty(
+        limit: limit,
+        offset: offset,
+      );
     }
   }
 
@@ -358,9 +506,9 @@ class Formula1Data {
   /// [offset] is the number of results to skip (default: 0).
   /// [limit] is the maximum number of results to return (default: 30).
   ///
-  /// Returns a list of [ConstructorStanding] objects.
-  /// Returns an empty list if the API call fails or no results are found.
-  Future<List<ConstructorStanding>> getConstructorStandings({
+  /// Returns a [PaginatedResult] of [ConstructorStanding] objects.
+  /// Returns an empty result if the API call fails or no results are found.
+  Future<PaginatedResult<ConstructorStanding>> getConstructorStandings({
     required int year,
     int? round,
     int offset = 0,
@@ -379,8 +527,9 @@ class Formula1Data {
         },
       );
       if (response.statusCode == 200) {
-        final data =
-            response.data['MRData']['StandingsTable']['StandingsLists'] as List;
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['StandingsTable']['StandingsLists'] as List;
+        final pagination = _parsePagination(mrData);
         final results = <ConstructorStanding>[];
         for (final standing in data) {
           final constructorStandings = standing['ConstructorStandings'] as List;
@@ -388,11 +537,22 @@ class Formula1Data {
             results.add(ConstructorStanding.fromJson(constructorStanding));
           }
         }
-        return results;
+        return PaginatedResult<ConstructorStanding>(
+          items: results,
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return [];
+      return PaginatedResult<ConstructorStanding>.empty(
+        limit: limit,
+        offset: offset,
+      );
     } catch (e) {
-      return [];
+      return PaginatedResult<ConstructorStanding>.empty(
+        limit: limit,
+        offset: offset,
+      );
     }
   }
 
@@ -403,9 +563,9 @@ class Formula1Data {
   /// [offset] is the number of results to skip (default: 0).
   /// [limit] is the maximum number of results to return (default: 30).
   ///
-  /// Returns a list of [Status] objects.
-  /// Returns an empty list if the API call fails or no results are found.
-  Future<List<Status>> getStatus({
+  /// Returns a [PaginatedResult] of [Status] objects.
+  /// Returns an empty result if the API call fails or no results are found.
+  Future<PaginatedResult<Status>> getStatus({
     required int year,
     int? round,
     int offset = 0,
@@ -424,12 +584,19 @@ class Formula1Data {
         },
       );
       if (response.statusCode == 200) {
-        final data = response.data['MRData']['StatusTable']['Status'] as List;
-        return data.map((json) => Status.fromJson(json)).toList();
+        final mrData = response.data['MRData'] as Map<String, dynamic>;
+        final data = mrData['StatusTable']['Status'] as List;
+        final pagination = _parsePagination(mrData);
+        return PaginatedResult<Status>(
+          items: data.map((json) => Status.fromJson(json)).toList(),
+          total: pagination.total,
+          limit: pagination.limit,
+          offset: pagination.offset,
+        );
       }
-      return [];
+      return PaginatedResult<Status>.empty(limit: limit, offset: offset);
     } catch (e) {
-      return [];
+      return PaginatedResult<Status>.empty(limit: limit, offset: offset);
     }
   }
 }

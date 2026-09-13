@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2.0.0
+
+* **Breaking:** Convert from a Flutter plugin to a pure Dart package (remove the `flutter` SDK dependency); the package can now be used in any Dart project, not just Flutter
+* Fix a bug where `Formula1Data` closed its shared `Dio` client after the first API call, causing every subsequent call on the same instance to silently fail and return `null`/an empty list
+* Correct the package description, which incorrectly referred to graphing/charting features that don't exist
+* Add an `example/` directory with a runnable usage sample
+* Add `topics` and `issue_tracker` to `pubspec.yaml`
+* Switch from `flutter_lints` to `lints` and update dev dependencies to their latest versions
+* Remove an unused duplicate `PitStop` model file
+* Fix incorrect field/method names in the README usage sample (`Circuit.circuitName`, `getLaps`, `PitStop.driver.driverId`)
+* **Breaking:** Every `Formula1Data` method now returns a `PaginatedResult<T>` instead of a bare `List<T>`, exposing `items`, `total`, `limit`, and `offset` (see #11). Access results via `.items` instead of the result directly.
+* Add a default `User-Agent` header identifying this package to the jolpica-f1 API (which requires one); `Formula1Data(userAgent: ...)` lets consuming apps prefix their own identifier
+* Add `offset`/`limit` pagination parameters to `getSeasons`, `getCircuits`, `getRaces`, `getConstructors`, `getDrivers`, and `getResults`, which previously always returned only the API's default 30 items
+
 ## 1.2.1
 
 * Fix getRace method to handle datetime fields correctly
