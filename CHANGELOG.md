@@ -10,6 +10,9 @@
 * Switch from `flutter_lints` to `lints` and update dev dependencies to their latest versions
 * Remove an unused duplicate `PitStop` model file
 * Fix incorrect field/method names in the README usage sample (`Circuit.circuitName`, `getLaps`, `PitStop.driver.driverId`)
+* **Breaking:** Every `Formula1Data` method now returns a `PaginatedResult<T>` instead of a bare `List<T>`, exposing `items`, `total`, `limit`, and `offset` (see #11). Access results via `.items` instead of the result directly.
+* Add a default `User-Agent` header identifying this package to the jolpica-f1 API (which requires one); `Formula1Data(userAgent: ...)` lets consuming apps prefix their own identifier
+* Add `offset`/`limit` pagination parameters to `getSeasons`, `getCircuits`, `getRaces`, `getConstructors`, `getDrivers`, and `getResults`, which previously always returned only the API's default 30 items
 
 ## 1.2.1
 

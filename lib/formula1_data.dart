@@ -14,4 +14,5 @@ export 'src/models/pitstop.dart';
 export 'src/models/lap.dart';
 export 'src/models/standing.dart';
 export 'src/models/status.dart';
+export 'src/models/paginated_result.dart';
 export 'src/services/formula1_data.dart';
